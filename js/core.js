@@ -159,8 +159,9 @@
   }
 
   HT.openForm = function ({ title, fields, values, submitLabel, onSubmit, intro }) {
-    formCtx = { fields, values: values || {}, onSubmit };
-    openModal(`<form id="modalForm"><h3>${esc(title)}</h3>${intro ? `<p class="muted">${esc(intro)}</p>` : ''}${fields.map((f) => fieldHtml(f, formCtx.values[f.name])).join('')}<p class="form-error" hidden></p><div class="form-actions"><button type="button" class="btn" data-action="closeModal">Cancel</button><button type="submit" class="btn primary">${esc(submitLabel || 'Save')}</button></div></form>`, 'wide');
+    const ctx = { fields, values: values || {}, onSubmit };
+    openModal(`<form id="modalForm"><h3>${esc(title)}</h3>${intro ? `<p class="muted">${esc(intro)}</p>` : ''}${fields.map((f) => fieldHtml(f, ctx.values[f.name])).join('')}<p class="form-error" hidden></p><div class="form-actions"><button type="button" class="btn" data-action="closeModal">Cancel</button><button type="submit" class="btn primary">${esc(submitLabel || 'Save')}</button></div></form>`, 'wide');
+    formCtx = ctx; // set AFTER openModal, which resets formCtx via closeModal()
   };
 
   async function submitModalForm(form) {
